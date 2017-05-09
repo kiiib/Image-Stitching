@@ -8,6 +8,7 @@ using namespace cv;
 using namespace std;
 
 void GetIntensity(const Mat& src, Mat& dst);
+void GetEigenValue(Mat& Ix, Mat& Iy, int aperture_size, Mat& lambda_min, Mat& lambda_max);
 
 int main(int argc, char** argv) {
 	Mat src,	// original Image
@@ -47,6 +48,7 @@ int main(int argc, char** argv) {
 
 	string imgPath = "./";
 	string filename = "cv.png";
+	string imagename = "test";
 	src = imread(filename);
 	
 	/*namedWindow(originImg, WINDOW_AUTOSIZE);
@@ -54,9 +56,19 @@ int main(int argc, char** argv) {
 
 	// convert to intensity
 	GetIntensity(src, intensity);
-	imshow(itensityImg, intensity);
+	/*namedWindow(itensityImg, WINDOW_AUTOSIZE);
+	imshow(itensityImg, intensity);*/
+	//imwrite(imagename + "_" + itensityImg + ".jpg", intensity);
+	
+	// get intensity x and y
+	GaussianBlur(intensity, Ix, Size(5, 5), 1, 0);
+	GaussianBlur(intensity, Iy, Size(5, 5), 0, 1);
+	//imwrite(imagename + "_" + ixImg + ".jpg", Ix);
+	//imwrite(imagename + "_" + iyImg + ".jpg", Iy);
 
-	waitKey();
+	GetEigenValue(Ix, Iy, aperture_size, lambda_min, lambda_max);
+
+	waitKey(0);
 	return 0;
 }
 
@@ -65,4 +77,8 @@ void GetIntensity(const Mat& src, Mat& dst) {
 	split(src, rgb);
 	addWeighted(rgb[0], 1.0 / 3.0, rgb[1], 1.0 / 3.0, 0.0, dst);
 	addWeighted(dst, 1.0, rgb[2], 1.0 / 3.0, 0.0, dst);
+}
+
+void GetEigenValue(Mat& Ix, Mat& Iy, int aperture_size, Mat& lambda_min, Mat& lambda_max) {
+	Ix.convertTo(Ix, CV_64FC1);
 }
