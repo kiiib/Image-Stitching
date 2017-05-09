@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <opencv2\opencv.hpp>
 #include <math.h>
 #include <string>
@@ -9,6 +9,9 @@ using namespace std;
 
 void GetIntensity(const Mat& src, Mat& dst);
 void GetEigenValue(Mat& Ix, Mat& Iy, int aperture_size, Mat& lambda_min, Mat& lambda_max);
+
+void FilterIntensity(const Mat& src, Mat& ix, Mat& iy);
+void Filter(const Mat& src, Mat& dst, const Mat& kernel);
 
 int main(int argc, char** argv) {
 	Mat src,	// original Image
@@ -61,6 +64,14 @@ int main(int argc, char** argv) {
 	//imwrite(imagename + "_" + itensityImg + ".jpg", intensity);
 	
 	// get intensity x and y
+	/*FilterIntensity(intensity, Ix, Iy);
+	namedWindow(ixImg, WINDOW_AUTOSIZE);
+	imshow(ixImg, Ix);
+	imwrite("IX_" + ixImg + ".jpg", Ix);
+	namedWindow(iyImg, WINDOW_AUTOSIZE);
+	imshow(iyImg, Iy);
+	imwrite("IY_" + iyImg + ".jpg", Iy);*/
+
 	GaussianBlur(intensity, Ix, Size(5, 5), 1, 0);
 	GaussianBlur(intensity, Iy, Size(5, 5), 0, 1);
 	//imwrite(imagename + "_" + ixImg + ".jpg", Ix);
@@ -81,4 +92,63 @@ void GetIntensity(const Mat& src, Mat& dst) {
 
 void GetEigenValue(Mat& Ix, Mat& Iy, int aperture_size, Mat& lambda_min, Mat& lambda_max) {
 	Ix.convertTo(Ix, CV_64FC1);
+	Iy.convertTo(Iy, CV_64FC1);
+	lambda_min = Mat(Ix.rows, Iy.cols, CV_64FC1);
+	lambda_max = Mat(Ix.rows, Iy.cols, CV_64FC1);
+
+	// loop two mats
+	for (int i = 0; i < (Ix.rows - aperture_size); i++) {
+		for (int j = 0; j < (Ix.cols - aperture_size); j++) {
+			// calculate the sum of a window
+			double A = 0, B = 0, C = 0;
+			for (int ii = i; ii < aperture_size; ii++) {
+
+			}
+		}
+	}
 }
+
+
+
+
+
+
+//
+///*
+//* get intensity x and intensity y from intensity mat
+//* use sobel filter
+//*/
+//void FilterIntensity(const Mat& src, Mat& ix, Mat& iy)
+//{
+//	double sobel_x[] = { -1,  0,  1, -1, 0, 1, -1, 0, 1 };
+//	double sobel_y[] = { 1, 1, 1,  0, 0, 0,  -1, -1, -1 };
+//	Mat kx = Mat(3, 3, CV_64FC1, sobel_x);
+//	Mat ky = Mat(3, 3, CV_64FC1, sobel_y);
+//	Filter(src, ix, kx);
+//	Filter(src, iy, ky);
+//}
+//
+///*
+//* filter
+//*/
+//void Filter(const Mat& src, Mat& dst, const Mat& kernel)
+//{
+//	CV_Assert(src.depth() == CV_8U);
+//	dst.create(src.size(), src.type());
+//	for (int i = kernel.rows / 2; i < src.rows - (kernel.rows + 1) / 2; i++)
+//	{
+//		for (int j = kernel.cols / 2; j < src.cols - (kernel.cols + 1) / 2; j++)
+//		{
+//			double sum = 0;
+//			for (int ii = 0; ii <kernel.rows; ii++)
+//			{
+//				for (int jj = 0; jj < kernel.cols; jj++)
+//				{
+//					sum += src.at<uchar>(ii + i - kernel.rows / 2, jj + j - kernel.cols / 2)*kernel.at<double>(ii, jj);
+//				}
+//			}
+//			sum = abs(sum);
+//			dst.at<uchar>(i, j) = saturate_cast<uchar>(sum);
+//		}
+//	}
+//}
