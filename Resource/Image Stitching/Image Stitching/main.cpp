@@ -14,6 +14,7 @@ void FilterIntensity(const Mat& src, Mat& ix, Mat& iy);
 void Filter(const Mat& src, Mat& dst, const Mat& kernel);
 void CalculateR(const Mat& lamdba_min, const Mat& lamdba_max, double k, Mat& R, Mat& NR, double threshold);
 void FilterR(const Mat&src, Mat& dst, int aperture_size, double threshold);
+void DrawCorner(const Mat& src, const Mat& R, Mat& dst, int size);
 
 int main(int argc, char** argv) {
 	Mat src,	// original Image
@@ -94,7 +95,13 @@ int main(int argc, char** argv) {
 
 	// filter R
 	FilterR(R, FR, aperture_size * 3, threshold);
-	imshow(FRImg, FR);
+	//imshow(FRImg, FR);
+	//imwrite(imagename + "_" + FRImg + ".jpg", FR);
+
+	// draw corner
+	DrawCorner(src, FR, Corner, 3);
+	imshow(cornerImg, Corner);
+	//imwrite(imagename + "_" + cornerImg + ".jpg", Corner);
 
 	waitKey(0);
 	return 0;
@@ -176,7 +183,27 @@ void FilterR(const Mat& R, Mat& dst, int aperture_size, double threshold) {
 		
 }
 
-
+void DrawCorner(const Mat& src, const Mat& R, Mat& dst, int size) {
+	if(src.channels() == 3){
+		Mat bgr[3];
+		split(src, bgr);
+		CV_Assert(R.size() == bgr[2].size());
+		for (int i = size / 2; i < R.rows - (size + 1) / 2; i++) {
+			for (int j = size / 2; j < R.cols - (size + 1) / 2; j++) {
+				if (R.at<double>(i, j) >= 255) {
+					for (int ii = -size / 2; ii < (size + 1) / 2; ii++) {
+						for (int jj = -size / 2; jj < (size + 1) / 2; jj++) {
+							bgr[0].at<uchar>(i + ii, j + jj) = 0;
+							bgr[1].at<uchar>(i + ii, j + jj) = 0;
+							bgr[2].at<uchar>(i + ii, j + jj) = 255;
+						}
+					}
+				}
+			}
+		}
+		merge(bgr, 3, dst);
+	}
+}
 
 /*
 * get intensity x and intensity y from intensity mat
