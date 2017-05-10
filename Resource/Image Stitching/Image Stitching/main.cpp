@@ -53,7 +53,7 @@ int main(int argc, char** argv) {
 	const string cornerImg = "Origin with corner";
 
 	string imgPath = "./";
-	string filename = "cv.png";
+	string filename = "prtn00.jpg";
 	string imagename = "test";
 	src = imread(filename);
 	
@@ -64,44 +64,44 @@ int main(int argc, char** argv) {
 	GetIntensity(src, intensity);
 	/*namedWindow(itensityImg, WINDOW_AUTOSIZE);
 	imshow(itensityImg, intensity);*/
-	//imwrite(imagename + "_" + itensityImg + ".jpg", intensity);
+	imwrite(imagename + "_" + itensityImg + ".jpg", intensity);
 	
 	// get intensity x and y
 	FilterIntensity(intensity, Ix, Iy);
 	//namedWindow(ixImg, WINDOW_AUTOSIZE);
 	//imshow(ixImg, Ix);
-	//imwrite("IX_" + ixImg + ".jpg", Ix);
+	imwrite("IX_" + ixImg + ".jpg", Ix);
 	//namedWindow(iyImg, WINDOW_AUTOSIZE);
 	//imshow(iyImg, Iy);
-	//imwrite("IY_" + iyImg + ".jpg", Iy);
+	imwrite("IY_" + iyImg + ".jpg", Iy);
 
 	//GaussianBlur(intensity, Ix, Size(5, 5), 1, 0);
 	//GaussianBlur(intensity, Iy, Size(5, 5), 0, 1);
-	//imwrite(imagename + "_" + ixImg + ".jpg", Ix);
-	//imwrite(imagename + "_" + iyImg + ".jpg", Iy);
+	imwrite(imagename + "_" + ixImg + ".jpg", Ix);
+	imwrite(imagename + "_" + iyImg + ".jpg", Iy);
 
 	GetEigenValue(Ix, Iy, aperture_size, lambda_min, lambda_max);
 	//imshow(lambdaMaxImg, lambda_max);
 	//imshow(lambdaMinImg, lambda_min);
-	//imwrite(imagename + "_" + lambdaMaxImg + ".jpg", lambda_max);
-	//imwrite(imagename + "_" + lambdaMinImg  + ".jpg", lambda_min);
+	imwrite(imagename + "_" + lambdaMaxImg + ".jpg", lambda_max);
+	imwrite(imagename + "_" + lambdaMinImg  + ".jpg", lambda_min);
 
 	// calculate R
 	CalculateR(lambda_min, lambda_max, k, R, NR, threshold);
 	//imshow(RImg, R);
-	//imwrite(imagename + "_" + RImg + ".jpg", R);
+	imwrite(imagename + "_" + RImg + ".jpg", R);
 	//imshow(NRImg, NR);
-	//imwrite(imagename + "_" + NRImg + ".jpg", NR);
+	imwrite(imagename + "_" + NRImg + ".jpg", NR);
 
 	// filter R
 	FilterR(R, FR, aperture_size * 3, threshold);
 	//imshow(FRImg, FR);
-	//imwrite(imagename + "_" + FRImg + ".jpg", FR);
+	imwrite(imagename + "_" + FRImg + ".jpg", FR);
 
 	// draw corner
 	DrawCorner(src, FR, Corner, 3);
 	imshow(cornerImg, Corner);
-	//imwrite(imagename + "_" + cornerImg + ".jpg", Corner);
+	imwrite(imagename + "_" + cornerImg + ".jpg", Corner);
 
 	waitKey(0);
 	return 0;
