@@ -1,11 +1,5 @@
 % Random Sample Consensus for avoiding outliner
-function maxFeatureMatch = RANSAC(featuresPos1, featuresDesc1, featuresPos2, featuresDesc2)
-    p = 0.5;
-    n = 3;
-    P = 0.9999;
-    k = ceil(log(1 - P) / log (1 - P ^ n)) + 100;
-    threshold = 10;
-    
+function maxFeatureMatch = featuresMatching(featuresPos1, featuresDesc1, featuresPos2, featuresDesc2)
     % Find matched features
     matchDesc = [];
     for i = 1 : size(featuresDesc1, 1)
@@ -27,6 +21,12 @@ function maxFeatureMatch = RANSAC(featuresPos1, featuresDesc1, featuresPos2, fea
         end
     end
 
+    p = 0.5;
+    n = 3;
+    P = 0.999;
+    k = ceil(log(1 - P) / log (1 - P ^ n)) + 100;
+    threshold = 10;
+    
     N = size(matchDesc, 1);
     maxFeatureMatch = [];
     if(N <= n)
