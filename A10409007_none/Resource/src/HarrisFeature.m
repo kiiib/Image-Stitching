@@ -42,38 +42,4 @@ function [featureX, featureY] = HarrisFeature(image, w, sigma, k, threshold)
     RN(:, [1:15, end-16:end]) = 0;
     
     [featureY, featureX] = find(RN);
-% 
-%     % remove edge
-%     x2 = [1 -2 1];
-% 	y2 = [1; -2; 1];
-% 	xy = [1 0 -1; 0 0 0; -1 0 1];
-%     % Thresholds
-% 	edge_threshold = ((10 + 1) ^ 2) / 10;
-% 	contrast = abs(filter2(fspecial('gaussian', 5), I_double) - I_double);
-% 	contrast_threshold = 0.03;
-% 
-%     featureX = [];
-% 	featureY = [];
-%     for i = 1:numel(featureX_tmp)
-% 		x = featureX_tmp(i);
-% 		y = featureY_tmp(i);
-% 
-% 		% Remove boundary
-% 		if ((x > 7) && (x <= (col - 7)) && (y > 7) && (y <= row - 7))
-% 			% Remove edge
-% 			D_y2 = sum(I_double(y, x - 1:x + 1) .* x2);
-% 			D_x2 = sum(I_double(y - 1:y + 1, x) .* y2);
-% 			D_xy = sum(sum(I_double(y - 1:y + 1, x - 1:x + 1) .* xy)) / 4;
-% 
-% 			Tr_Hessian = D_x2 + D_y2;
-% 			Det_Hessian = D_x2 * D_y2 - D_xy ^ 2;
-% 
-% 			ratio = (Tr_Hessian ^ 2) / Det_Hessian;
-% 
-% 			if ((Det_Hessian >= 0) && (ratio < edge_threshold) && (D(y, x) > contrast_threshold))
-%                 featureX = [featureX; x];
-%                 featureY = [featureY; y];
-%             end
-%         end
-%     end
 end

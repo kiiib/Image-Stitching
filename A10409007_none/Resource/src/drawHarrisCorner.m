@@ -5,4 +5,4 @@ function drawHarrisCorner(image, points)
     hold on
     plot(X, Y, 'b*');
     set(gcf, 'Color', 'w');
-endw
+end

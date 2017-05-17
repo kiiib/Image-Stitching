@@ -8,7 +8,8 @@ function trans = solveTranslation(match,pos1, pos2)
 		A(i, 1) = 1;
 		A(i, 3) = pos1(match(i, 1), 1);
 		b(i, 1) = pos2(match(i, 2), 1);
-
+    end
+    for i = 1 : n
 		% Fill y and y' into matrices
 		A(i + n, 2) = 1;
 		A(i + n, 3) = pos1(match(i, 1), 2);
